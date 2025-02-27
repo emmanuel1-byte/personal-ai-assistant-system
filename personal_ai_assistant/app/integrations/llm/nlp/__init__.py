@@ -1,0 +1,1 @@
+from .google_genai import get_intent

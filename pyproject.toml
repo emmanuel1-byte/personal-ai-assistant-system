@@ -6,8 +6,10 @@ authors = ["emmanuel1-byte <emmnauelhilary9@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.10, <3.12"
 fastapi = {extras = ["standard"], version = "^0.115.8"}
+tts = "^0.22.0"
+google-generativeai = "^0.8.4"
 
 
 [build-system]

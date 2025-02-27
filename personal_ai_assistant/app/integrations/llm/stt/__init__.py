@@ -1,0 +1,1 @@
+from .whisper.whisper import speech_to_text

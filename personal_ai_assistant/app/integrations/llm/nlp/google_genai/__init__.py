@@ -1,0 +1,1 @@
+from .gemini import get_intent
