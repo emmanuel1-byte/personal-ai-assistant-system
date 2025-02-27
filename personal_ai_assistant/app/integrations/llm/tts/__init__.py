@@ -1,0 +1,1 @@
+from .coqui import text_to_speech
