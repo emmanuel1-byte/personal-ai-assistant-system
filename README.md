@@ -1,6 +1,5 @@
 
 ---
-
 # Personal AI Assistant   
 
 This is the backend system for a **privacy-focused, voice-activated AI assistant** that automates personal and professional workflows. Built with **FastAPI**, it provides fast, secure, and scalable API endpoints for voice processing, task automation.
@@ -25,7 +24,7 @@ This is the backend system for a **privacy-focused, voice-activated AI assistant
    ```  
 2. Install dependencies:  
    ```sh
-   pip install -r requirements.txt  
+   poetry install
    ```  
 3. Run the FastAPI server:  
    ```sh
