@@ -8,12 +8,11 @@ This is the backend system for a **privacy-focused, voice-activated AI assistant
 - **Voice Command Processing** (Speech-to-Text, Wake-word detection)  
 - **Task Automation** (Email summarization, scheduling, call management)  
 - **Context-Aware AI Responses**  
-- **Secure API Integrations** Google  
+- **Secure API Integrations** (Google)  
 - **End-to-End Encryption** for privacy  
 
 ## Tech Stack  
 - **Backend:** FastAPI (Python)  
-- **Database:** PostgreSQL / MongoDB  
 - **AI & NLP:** OpenAI, Whisper, Coqui, Gemini  
 
 ## Setup  
