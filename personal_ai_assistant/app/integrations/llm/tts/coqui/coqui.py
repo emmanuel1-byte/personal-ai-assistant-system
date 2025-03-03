@@ -1,24 +1,31 @@
 import torch
 from TTS.api import TTS
+from io import BytesIO
+import soundfile as sf
 
 
 """
-Converts the given text to speech and saves it to a file.
+Convert input text to speech and return the audio as a WAV file in a buffer.
 
-This function utilizes a TTS model to generate speech from the input text.
-It selects the appropriate device (CUDA or CPU) for processing based on
-availability. The function lists available TTS models and uses a specific
-German TTS model for conversion.
+This function utilizes a TTS model to synthesize speech from the provided text.
+The audio is processed on a CUDA-enabled GPU if available, otherwise on the CPU.
+The resulting audio is stored in a BytesIO buffer in WAV format.
 
 Args:
-    text (str): The text to be converted to speech.
+    text (str): The input text to be converted to speech.
 
 Returns:
-    str: The file path where the generated speech is saved.
+    BytesIO: A buffer containing the synthesized speech in WAV format.
 """
 def text_to_speech(text):
+    print(text, "Text................")
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    tts = TTS(model_name="tts_models/de/thorsten/tacotron2-DDC", progress_bar=False).to(
-        device
-    )
-    return tts.tts_to_file(text)
+    tts = TTS(model_name="tts_models/en/ljspeech/vits", progress_bar=False).to(device)
+
+    wav = tts.tts(text)
+
+    buffer = BytesIO()
+    sf.write(buffer, wav, samplerate=22050, format="WAV")
+    buffer.seek(0)
+
+    return buffer

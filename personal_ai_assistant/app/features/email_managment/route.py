@@ -2,30 +2,32 @@ from fastapi import APIRouter, UploadFile, Depends
 from fastapi.responses import JSONResponse, StreamingResponse
 from ...helpers import validate_file, route_request
 from typing import Annotated
-from ...integrations import speech_to_text, get_intent
+from ...integrations import (
+    speech_to_text,
+    get_intent,
+    text_to_speech,
+)
 import tempfile
 import os
 
 email_management = APIRouter(prefix="/api/emails", tags=["Email-management"])
 
 
+
 """
-Handles email-related requests by processing an uploaded audio file.
+Handles the POST request to process an uploaded audio file.
 
-This endpoint accepts an audio file, validates its type, and processes it to
-determine the user's intent. The audio file is temporarily saved, converted to
-text using a speech-to-text service, and analyzed to extract the user's intent.
-Based on the identified intent, an appropriate task is executed, and the
-response is streamed back to the client.
+This endpoint accepts an audio file, validates its type, and processes it
+to determine the user's intent. The audio is converted to text, classified
+into an intent, and routed to the appropriate handler. The response is then
+converted to speech and streamed back to the client.
 
-Parameters:
+Args:
     file (UploadFile): The audio file uploaded by the user.
-    v_result (bool): The result of the file validation, injected by FastAPI's
-    dependency system.
+    v_result (bool): Validation result of the uploaded file type.
 
 Returns:
-    StreamingResponse: A streaming response containing the result of the
-    requested task, with a status code of 200.
+    StreamingResponse: The audio response generated from the processed intent.
 """
 @email_management.post("/")
 def email(file: UploadFile, v_result: Annotated[bool, Depends(validate_file)]):
@@ -34,11 +36,13 @@ def email(file: UploadFile, v_result: Annotated[bool, Depends(validate_file)]):
             temp_file.write(file.file.read())
             temp_file_path = temp_file.name
 
-            stt_response = speech_to_text(temp_file_path)
-            user_intention = get_intent(stt_response)
+            text_response = speech_to_text(temp_file_path)
+            user_intention = get_intent(text_response)
 
-            task_response = route_request(user_intention)
-            
-            return StreamingResponse(content=task_response, status_code=200)
+            router_response = route_request(user_intention)
+            print(router_response, "Router Response....")
+            tts_response = text_to_speech(router_response)
+
+            return StreamingResponse(content=tts_response, media_type="audio/wav", status_code=200)
     finally:
         os.remove(temp_file_path)
