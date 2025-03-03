@@ -1,1 +1,1 @@
-from .gemini import get_intent
+from .gemini import get_intent, format_read_email_response_for_tts
