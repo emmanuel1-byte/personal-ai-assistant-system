@@ -18,7 +18,6 @@ Returns:
     BytesIO: A buffer containing the synthesized speech in WAV format.
 """
 def text_to_speech(text):
-    print(text, "Text................")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     tts = TTS(model_name="tts_models/en/ljspeech/vits", progress_bar=False).to(device)
 
